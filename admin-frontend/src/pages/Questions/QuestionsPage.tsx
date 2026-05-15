@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AdminLayout from '../components/AdminLayout.tsx';
+import AdminLayout from '../../layouts/AdminLayout';
 import toast from 'react-hot-toast';
 
 interface Question {

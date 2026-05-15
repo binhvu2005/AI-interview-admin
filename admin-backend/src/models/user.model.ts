@@ -4,7 +4,8 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  isLocked: { type: Boolean, default: false },
+  isBlocked: { type: Boolean, default: false },
+  isVip: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 });
 

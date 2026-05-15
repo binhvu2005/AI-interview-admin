@@ -16,12 +16,22 @@ export const fetchUserDetailWithInterviews = async (userId: string) => {
   return { user, interviews };
 };
 
-export const updateLockStatus = async (userId: string) => {
+export const updateBlockStatus = async (userId: string) => {
   const user = await User.findById(userId);
   if (!user) throw new Error('User not found');
   
-  user.isLocked = !user.isLocked;
+  user.isBlocked = !user.isBlocked;
   await user.save();
   
-  return { message: `User ${user.isLocked ? 'locked' : 'unlocked'}`, isLocked: user.isLocked };
+  return { message: `User ${user.isBlocked ? 'blocked' : 'unblocked'}`, isBlocked: user.isBlocked };
+};
+
+export const updateVipStatus = async (userId: string) => {
+  const user = await User.findById(userId);
+  if (!user) throw new Error('User not found');
+  
+  user.isVip = !user.isVip;
+  await user.save();
+  
+  return { message: `User ${user.isVip ? 'VIP' : 'Normal'}`, isVip: user.isVip };
 };

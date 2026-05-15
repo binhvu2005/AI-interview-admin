@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import AdminLayout from '../components/AdminLayout.tsx';
+import AdminLayout from '../../layouts/AdminLayout';
 
 interface Stats {
   totalUsers: number;

@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { label: 'Users', icon: 'group', path: '/users' },
   { label: 'Talent Pool', icon: 'military_tech', path: '/talent-pool' },
   { label: 'System Data', icon: 'settings_input_component', path: '/system-data' },
+  { label: 'Community', icon: 'forum', path: '/forum' },
 ];
 
 export default function AdminLayout({ children, activePage }: AdminLayoutProps) {

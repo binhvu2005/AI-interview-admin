@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AdminLayout from '../components/AdminLayout.tsx';
+import AdminLayout from '../../layouts/AdminLayout';
 
 interface Interview {
   _id: string;
@@ -24,7 +24,8 @@ interface User {
   email: string;
   createdAt: string;
   interviewCount: number;
-  isLocked?: boolean;
+  isBlocked?: boolean;
+  isVip?: boolean;
   avatar?: string;
 }
 
@@ -73,12 +74,21 @@ export default function UsersPage() {
     fetchUserDetail(user._id);
   };
 
-  const handleToggleLock = async (id: string) => {
+  const handleToggleBlock = async (id: string) => {
     try {
-      await fetch(`${API_BASE}/${id}/toggle-lock`, { method: 'PUT' });
+      await fetch(`${API_BASE}/${id}/toggle-block`, { method: 'PUT' });
       fetchUsers();
     } catch (err) {
-      console.error('Lock error:', err);
+      console.error('Block error:', err);
+    }
+  };
+
+  const handleToggleVip = async (id: string) => {
+    try {
+      await fetch(`${API_BASE}/${id}/toggle-vip`, { method: 'PUT' });
+      fetchUsers();
+    } catch (err) {
+      console.error('VIP error:', err);
     }
   };
 
@@ -147,9 +157,16 @@ export default function UsersPage() {
                   <td>{formatDate(u.createdAt)}</td>
                   <td><span className="badge badge-primary">{u.interviewCount} sessions</span></td>
                   <td>
-                    <span className={`badge ${u.isLocked ? 'badge-error' : 'badge-success'}`}>
-                      {u.isLocked ? 'Locked' : 'Active'}
-                    </span>
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <span className={`badge ${u.isBlocked ? 'badge-error' : 'badge-success'}`}>
+                        {u.isBlocked ? 'Blocked' : 'Active'}
+                      </span>
+                      {u.isVip && (
+                        <span className="badge" style={{ background: 'var(--accent)', color: '#fff', border: 'none' }}>
+                          VIP
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td>
                     <div className="action-btns">
@@ -158,11 +175,19 @@ export default function UsersPage() {
                       </button>
                       <button 
                         className="action-btn" 
-                        title={u.isLocked ? "Unlock" : "Lock"} 
-                        onClick={() => handleToggleLock(u._id)}
-                        style={{ color: u.isLocked ? 'var(--success)' : 'var(--error)' }}
+                        title={u.isVip ? "Remove VIP" : "Make VIP"} 
+                        onClick={() => handleToggleVip(u._id)}
+                        style={{ color: u.isVip ? 'var(--accent)' : 'var(--text-muted)' }}
                       >
-                        <span className="material-symbols-outlined">{u.isLocked ? 'lock_open' : 'lock'}</span>
+                        <span className="material-symbols-outlined">workspace_premium</span>
+                      </button>
+                      <button 
+                        className="action-btn" 
+                        title={u.isBlocked ? "Unblock" : "Block"} 
+                        onClick={() => handleToggleBlock(u._id)}
+                        style={{ color: u.isBlocked ? 'var(--success)' : 'var(--error)' }}
+                      >
+                        <span className="material-symbols-outlined">{u.isBlocked ? 'lock_open' : 'lock'}</span>
                       </button>
                     </div>
                   </td>
